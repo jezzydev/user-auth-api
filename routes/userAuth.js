@@ -152,7 +152,11 @@ router.post("/refresh", async (req, res, next) => {
                 refreshToken,
                 process.env.REFRESH_TOKEN_SECRET,
             );
-            user = { id: decoded.sub, email: decoded.email };
+            user = {
+                id: decoded.sub,
+                email: decoded.email,
+                role: decoded.role,
+            };
         } catch (error) {
             throw new AuthorizationError("Invalid or expired token");
         }
