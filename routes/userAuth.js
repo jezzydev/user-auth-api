@@ -14,7 +14,7 @@ import {
 } from "../utils/errors.js";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
-import rateLimit from "express-rate-limit";
+import rateLimit, { ipKeyGenerator } from "express-rate-limit";
 //import { RedisStore } = from 'rate-limit-redis'; //need to install pkg
 import {
     generateAccessToken,
@@ -25,8 +25,11 @@ import { authenticateToken } from "../middleware/authenticate.js";
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, //15 minutes
     max: 3,
-    keyGenerator: (req) => req.body.email?.toLowerCase().trim() || req.ip,
+    keyGenerator: (req) =>
+        req.body.email?.toLowerCase().trim() || ipKeyGenerator(req),
     message: "Too many login attempts. Please try again later.",
+    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
     // store: new RedisStore({ client: redisClient }), //if using RedisStore
 });
 
