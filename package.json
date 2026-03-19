@@ -1,0 +1,41 @@
+{
+    "name": "user-auth-api",
+    "version": "1.0.0",
+    "description": "User Auth API",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node --env-file=.env server.js",
+        "dev": "nodemon --env-file=.env server.js",
+        "lint": "eslint",
+        "lint-fix": "eslint . --fix",
+        "format": "prettier --write"
+    },
+    "keywords": [
+        "api",
+        "api"
+    ],
+    "author": "",
+    "license": "ISC",
+    "type": "module",
+    "devDependencies": {
+        "@eslint/js": "^10.0.1",
+        "eslint": "^10.0.3",
+        "eslint-config-prettier": "^10.1.8",
+        "globals": "^17.4.0",
+        "nodemon": "^3.1.14"
+    },
+    "dependencies": {
+        "bcrypt": "^6.0.0",
+        "compression": "^1.8.1",
+        "cookie-parser": "^1.4.7",
+        "express": "^5.2.1",
+        "express-rate-limit": "^8.3.1",
+        "helmet": "^8.1.0",
+        "jsonwebtoken": "^9.0.3",
+        "pg": "^8.20.0"
+    },
+    "engines": {
+        "node": ">=24.13.1"
+    }
+}
