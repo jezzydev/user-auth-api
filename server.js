@@ -8,6 +8,7 @@ import logger from "./middleware/logger.js";
 import { testConnection } from "./db/database.js";
 import cookieParser from "cookie-parser";
 import { authenticateToken } from "./middleware/authenticate.js";
+import cors from "cors";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -17,6 +18,13 @@ testConnection().catch((err) => {
     process.exit(1);
 });
 
+app.use(
+    cors({
+        origin: process.env.FRONTEND_URL,
+        credentials: true,
+        methods: ["GET", "POST", "PUT", "DELETE"],
+    }),
+);
 app.use(express.json());
 app.use(logger);
 app.use(cookieParser());
