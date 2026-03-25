@@ -86,7 +86,7 @@ router.post("/login", limiter, async (req, res, next) => {
         const result = await pool.query(query, [req.body.email]);
 
         if (result.rows.length === 0) {
-            throw new AuthenticationError("Login failed.");
+            throw new AuthenticationError("Invalid email or password.");
         }
 
         const passwordMatched = await bcrypt.compare(
@@ -95,7 +95,7 @@ router.post("/login", limiter, async (req, res, next) => {
         );
 
         if (!passwordMatched) {
-            throw new AuthenticationError("Login failed.");
+            throw new AuthenticationError("Invalid email or password. ");
         }
 
         const user = {
