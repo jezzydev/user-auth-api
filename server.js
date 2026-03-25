@@ -28,7 +28,19 @@ app.use(
 app.use(express.json());
 app.use(logger);
 app.use(cookieParser());
-app.use(helmet());
+app.use(
+    helmet({
+        hsts: process.env.NODE_ENV === "production" ? undefined : false,
+        contentSecurityPolicy:
+            process.env.NODE_ENV === "production" ? undefined : false,
+        // contentSecurityPolicy: {
+        // directives: {
+        //     ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+        //     upgradeInsecureRequests: null, // remove this directive
+        // }
+    }),
+);
+
 app.use(compression());
 
 app.use("/api/auth", authRoutes);

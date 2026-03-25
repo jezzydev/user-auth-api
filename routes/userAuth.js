@@ -24,7 +24,7 @@ import { authenticateToken } from "../middleware/authenticate.js";
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, //15 minutes
-    max: 3,
+    max: 30, //TODO: change to 3
     keyGenerator: (req) =>
         req.body.email?.toLowerCase().trim() || ipKeyGenerator(req),
     message: "Too many login attempts. Please try again later.",
@@ -32,6 +32,21 @@ const limiter = rateLimit({
     legacyHeaders: false, // Disable the `X-RateLimit-*` headers
     // store: new RedisStore({ client: redisClient }), //if using RedisStore
 });
+
+const REFRESH_PATH = "/api/auth/refresh";
+
+const cookieSettings = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", //use 'strict' for same orgiin
+    path: REFRESH_PATH,
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+};
+
+const clearCookieSettings = {
+    httpOnly: true,
+    path: REFRESH_PATH,
+};
 
 //Create a new user
 router.post("/register", async (req, res, next) => {
@@ -113,13 +128,7 @@ router.post("/login", limiter, async (req, res, next) => {
             user.token_version = updateVersionResult.rows[0].token_version;
             const accessToken = generateAccessToken(user);
 
-            res.cookie("refreshToken", newRefreshToken, {
-                httpOnly: true,
-                secure: true,
-                sameSite: "strict",
-                path: "/api/auth/refresh",
-                maxAge: 7 * 24 * 60 * 60 * 1000,
-            });
+            res.cookie("refreshToken", newRefreshToken, cookieSettings);
 
             return res.json({
                 message: "Login successful.",
@@ -176,10 +185,7 @@ router.post("/refresh", async (req, res, next) => {
             getRefreshTokenResults.rows[0].revoked_at
         ) {
             await revokeAllUserTokens(user.id);
-            res.clearCookie("refreshToken", {
-                httpOnly: true,
-                path: "/api/auth/refresh",
-            });
+            res.clearCookie("refreshToken", clearCookieSettings);
             throw new AuthenticationError("Invalid token");
         }
 
@@ -212,13 +218,7 @@ router.post("/refresh", async (req, res, next) => {
             user.token_version = updateVersionResult.rows[0].token_version;
             const accessToken = generateAccessToken(user);
 
-            res.cookie("refreshToken", newRefreshToken, {
-                httpOnly: true,
-                secure: true,
-                sameSite: "strict",
-                path: "/api/auth/refresh",
-                maxAge: 7 * 24 * 60 * 60 * 1000,
-            });
+            res.cookie("refreshToken", newRefreshToken, cookieSettings);
 
             return res.json({
                 message: "Refresh token generated",
@@ -239,10 +239,7 @@ router.post("/refresh", async (req, res, next) => {
 router.post("/logout", authenticateToken, async (req, res, next) => {
     try {
         await revokeAllUserTokens(req.user.sub);
-        res.clearCookie("refreshToken", {
-            httpOnly: true,
-            path: "/api/auth/refresh",
-        });
+        res.clearCookie("refreshToken", clearCookieSettings);
         res.sendStatus(204);
     } catch (error) {
         next(error);
@@ -253,7 +250,7 @@ router.post("/logout", authenticateToken, async (req, res, next) => {
 router.post("/change-password", authenticateToken, async (req, res, next) => {
     try {
         isValidEmail(req.body.email);
-        isValidPassword(req.body.password);
+        isValidPassword(req.body.password, true);
         isValidPassword(req.body.oldPassword);
 
         const query =
@@ -272,10 +269,7 @@ router.post("/change-password", authenticateToken, async (req, res, next) => {
                     "UPDATE users SET password_hash = $1 WHERE email = $2";
                 await pool.query(queryUpdatePwd, [hash, req.body.email]);
                 await revokeAllUserTokens(req.user.sub);
-                res.clearCookie("refreshToken", {
-                    httpOnly: true,
-                    path: "/api/auth/refresh",
-                });
+                res.clearCookie("refreshToken", clearCookieSettings);
                 return res.json({ message: "Password changed successfully." });
             }
         }

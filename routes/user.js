@@ -21,7 +21,7 @@ router.get("/", adminOnly, async (req, res, next) => {
 router.get("/me", async (req, res, next) => {
     try {
         const result = await pool.query(
-            "SELECT id, email, name, bdate, role FROM users WHERE id = $1",
+            "SELECT id, email, name, bdate, role, created_at FROM users WHERE id = $1",
             [req.user.sub],
         );
 

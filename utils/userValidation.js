@@ -1,6 +1,6 @@
 import { ValidationError } from "./errors.js";
 
-const isValidEmail = (email) => {
+const isValidEmail = (email, isNew = false) => {
     if (!email) {
         throw new ValidationError("Email is required.");
     }
@@ -9,21 +9,23 @@ const isValidEmail = (email) => {
         throw new ValidationError("Email must be a string.");
     }
 
-    const trimmed = email.trim();
+    if (isNew) {
+        const trimmed = email.trim();
 
-    if (trimmed.length > 255) {
-        throw new ValidationError("Email must not exceed 255 characters.");
-    }
+        if (trimmed.length > 255) {
+            throw new ValidationError("Email must not exceed 255 characters.");
+        }
 
-    const regexp = /^([^\s@]+)@([^\s@]+)\.([^\s@]+)$/;
-    if (!regexp.test(trimmed)) {
-        throw new ValidationError("Email is invalid.");
+        const regexp = /^([^\s@]+)@([^\s@]+)\.([^\s@]+)$/;
+        if (!regexp.test(trimmed)) {
+            throw new ValidationError("Email is invalid.");
+        }
     }
 
     return true;
 };
 
-const isValidPassword = (password) => {
+const isValidPassword = (password, isNew = false) => {
     if (!password) {
         throw new ValidationError("Password is required.");
     }
@@ -32,15 +34,19 @@ const isValidPassword = (password) => {
         throw new ValidationError("Password must be a string.");
     }
 
-    const regexp = /\d/;
-    if (!regexp.test(password)) {
-        throw new ValidationError("Password must include at least one number.");
-    }
+    if (isNew) {
+        const regexp = /\d/;
+        if (!regexp.test(password)) {
+            throw new ValidationError(
+                "Password must include at least one number.",
+            );
+        }
 
-    const trimmed = password.trim();
+        const trimmed = password.trim();
 
-    if (trimmed.length < 8 || trimmed.length > 20) {
-        throw new ValidationError("Password must be 8-20 characters.");
+        if (trimmed.length < 8 || trimmed.length > 20) {
+            throw new ValidationError("Password must be 8-20 characters.");
+        }
     }
 
     return true;
@@ -66,7 +72,7 @@ const isValidName = (name) => {
 const isValidDateFormat = (dateStr) => {
     const regexp = /^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[01])$/; //yyyy-mm-dd
     if (!regexp.test(dateStr)) {
-        throw new ValidationError("Invalid date format. Must be yyyy-mm-dd");
+        throw new ValidationError("Date format is invalid. Must be yyyy-mm-dd");
     }
 
     return true;
@@ -93,8 +99,8 @@ const isValidDate = (dateStr) => {
 };
 
 const isValidUser = (user) => {
-    isValidEmail(user.email);
-    isValidPassword(user.password);
+    isValidEmail(user.email, true);
+    isValidPassword(user.password, true);
     isValidName(user.name);
     isValidDate(user.bdate);
 
