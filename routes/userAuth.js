@@ -7,11 +7,7 @@ import {
 } from "../utils/userValidation.js";
 import bcrypt from "bcrypt";
 import pool from "../db/database.js";
-import {
-    NotFoundError,
-    AuthenticationError,
-    AuthorizationError,
-} from "../utils/errors.js";
+import { AuthenticationError, AuthorizationError } from "../utils/errors.js";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import rateLimit, { ipKeyGenerator } from "express-rate-limit";
@@ -62,7 +58,7 @@ router.post("/register", async (req, res, next) => {
             hash,
             req.body.name,
             req.body.bdate,
-            req.body.role,
+            "user", //role is user by default
         ]);
 
         res.status(201).json({
@@ -95,7 +91,7 @@ router.post("/login", limiter, async (req, res, next) => {
         );
 
         if (!passwordMatched) {
-            throw new AuthenticationError("Invalid email or password. ");
+            throw new AuthenticationError("Invalid email or password.");
         }
 
         const user = {
@@ -266,15 +262,15 @@ router.post("/change-password", authenticateToken, async (req, res, next) => {
             if (passwordMatched) {
                 const hash = await bcrypt.hash(req.body.password, 10);
                 const queryUpdatePwd =
-                    "UPDATE users SET password_hash = $1 WHERE email = $2";
-                await pool.query(queryUpdatePwd, [hash, req.body.email]);
+                    "UPDATE users SET password_hash = $1 WHERE id = $2";
+                await pool.query(queryUpdatePwd, [hash, req.user.sub]);
                 await revokeAllUserTokens(req.user.sub);
                 res.clearCookie("refreshToken", clearCookieSettings);
                 return res.json({ message: "Password changed successfully." });
             }
         }
 
-        throw new NotFoundError(
+        throw new AuthenticationError(
             "Password change failed. Invalid email or password.",
         );
     } catch (error) {
