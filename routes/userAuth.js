@@ -20,7 +20,7 @@ import { authenticateToken } from "../middleware/authenticate.js";
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, //15 minutes
-    max: 30, //TODO: change to 3
+    max: process.env.MAX_LOGIN,
     keyGenerator: (req) =>
         req.body.email?.toLowerCase().trim() || ipKeyGenerator(req),
     message: "Too many login attempts. Please try again later.",
