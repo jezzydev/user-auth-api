@@ -34,7 +34,7 @@ const REFRESH_PATH = "/api/auth/refresh";
 const cookieSettings = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", //use 'strict' for same orgiin
+    sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax", //use 'none' for cross-orgiin
     path: REFRESH_PATH,
     maxAge: 7 * 24 * 60 * 60 * 1000,
 };
