@@ -174,7 +174,7 @@ router.post("/refresh", async (req, res, next) => {
             "SELECT * FROM refresh_tokens WHERE user_id = $1 AND token_hash = $2",
             [user.id, refreshTokenHash],
         );
-
+       
         //Refresh token doesn't exist or already revoked; Potential theft. Revoke all active refresh tokens of the user.
         if (
             getRefreshTokenResults.rows.length === 0 ||
@@ -191,7 +191,7 @@ router.post("/refresh", async (req, res, next) => {
             .update(newRefreshToken)
             .digest("hex");
         const expirationDate = new Date(jwt.decode(newRefreshToken).exp * 1000);
-        const client = await pool.connect();
+        const client = await pool.connect();      
 
         try {
             await client.query("BEGIN");

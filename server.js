@@ -9,6 +9,11 @@ import { testConnection } from "./db/database.js";
 import cookieParser from "cookie-parser";
 import { authenticateToken } from "./middleware/authenticate.js";
 import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -20,7 +25,7 @@ testConnection().catch((err) => {
 
 app.use(
     cors({
-        origin: process.env.FRONTEND_URL,
+        origin: process.env.BASE_URL,
         credentials: true,
         methods: ["GET", "POST", "PUT", "DELETE"],
     }),
@@ -42,14 +47,23 @@ app.use(
 );
 
 app.use(compression());
+app.use(express.static(path.join(__dirname, "public", "dist")));
 
+//API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/users", authenticateToken, userRoutes);
 
-app.use("/", (req, res, next) => {
+//404 for unknown API routes
+app.use("/api", (req, res, next) => {
     res.status(404).json({ message: "Route not found." });
 });
 
+//catch-all for frontend routes - must be last before error handler
+app.get("/{*path}", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
+//always last
 app.use(errorHandler);
 
 app.listen(PORT, () => console.log(`Server started at port ${PORT}`));

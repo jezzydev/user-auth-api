@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Registration</title>
+        <link rel="stylesheet" href="./css/base.css" />
+        <link rel="stylesheet" href="./css/style.css" />
+    </head>
+    <body>
+        <main>
+            <div class="container">
+                <h1 class="title">Registration</h1>
+                <div>
+                    <form id="register-form" novalidate>
+                        <p class="validation-msg"></p>
+                        <div class="field-container">
+                            <label for="name">Name</label>
+                            <input
+                                id="name"
+                                name="name"
+                                type="text"
+                                minlength="3"
+                                maxlength="255"
+                                aria-describedby="name-error"
+                                aria-invalid="false"
+                                required
+                            />
+                            <span
+                                id="name-error"
+                                class="error-message"
+                                role="alert"
+                            ></span>
+                        </div>
+                        <div class="field-container">
+                            <label for="email">Email</label>
+                            <input
+                                id="email"
+                                name="email"
+                                type="email"
+                                aria-describedby="email-error"
+                                aria-invalid="false"
+                                required
+                            />
+                            <span
+                                id="email-error"
+                                class="error-message"
+                                role="alert"
+                            ></span>
+                        </div>
+                        <div class="field-container">
+                            <label for="password">Password</label>
+                            <input
+                                id="password"
+                                name="password"
+                                type="password"
+                                minlength="8"
+                                maxlength="20"
+                                aria-describedby="password-error"
+                                aria-invalid="false"
+                                required
+                            />
+                            <span
+                                id="password-error"
+                                class="error-message"
+                                role="alert"
+                            ></span>
+                        </div>
+                        <div class="field-container">
+                            <label for="bdate">Date of Birth</label>
+                            <input
+                                id="bdate"
+                                name="bdate"
+                                type="date"
+                                aria-describedby="bdate-error"
+                                aria-invalid="false"
+                                required
+                            />
+                            <span
+                                id="bdate-error"
+                                class="error-message"
+                                role="alert"
+                            ></span>
+                        </div>
+                        <div>
+                            <button
+                                id="registerBtn"
+                                class="btn btn--submit"
+                                type="submit"
+                            >
+                                Register
+                            </button>
+                        </div>
+                    </form>
+                    <p class="register__back-to-login-text">
+                        Go back to <a href="./index.html">Login</a>
+                    </p>
+                </div>
+            </div>
+        </main>
+        <script type="module" src="./js/register.js"></script>
+    </body>
+</html>

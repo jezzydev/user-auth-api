@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Dashboard</title>
+        <link rel="stylesheet" href="./css/base.css" />
+        <link rel="stylesheet" href="./css/style.css" />
+    </head>
+    <body>
+        <main>
+            <div class="container">
+                <h1 class="title">User Profile</h1>
+                <div class="profile">
+                    <p class="validation-msg"></p>
+                    <h2 class="profile-item__value" id="name-value"></h2>
+                    <p class="profile-item__value" id="email-value"></p>
+                    <p class="profile-item__value" id="role-value"></p>
+
+                    <div>
+                        <span class="member-since-text">Member Since</span>
+                        <p
+                            class="profile-item__value"
+                            id="member-since-value"
+                        ></p>
+                    </div>
+                </div>
+                <div class="token-countdown-container">
+                    <span class="token-expires-text">Token Expires In</span>
+                    <div>
+                        <div class="profile-item__value countdown">
+                            <span
+                                id="token-expires-daysNum"
+                                class="countdown-num"
+                            >
+                            </span>
+                            <span class="countdown-label">days</span>
+                        </div>
+                        <div class="profile-item__value countdown">
+                            <span
+                                id="token-expires-hourNum"
+                                class="countdown-num"
+                            >
+                            </span>
+                            <span class="countdown-label">hours</span>
+                        </div>
+                        <div class="profile-item__value countdown">
+                            <span
+                                id="token-expires-minNum"
+                                class="countdown-num"
+                            >
+                            </span>
+                            <span class="countdown-label">min</span>
+                        </div>
+                        <div class="profile-item__value countdown">
+                            <span
+                                id="token-expires-secNum"
+                                class="countdown-num"
+                            >
+                            </span>
+                            <span class="countdown-label">sec</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-container">
+                    <a
+                        id="admin-panel-btn"
+                        class="btn btn--submit"
+                        href="./admin.html"
+                    >
+                        Admin Panel
+                    </a>
+                    <button id="logout-btn" class="btn" type="button">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </main>
+        <script type="module" src="./js/dashboard.js"></script>
+    </body>
+</html>

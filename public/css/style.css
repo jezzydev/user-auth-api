@@ -1,0 +1,208 @@
+.container {
+    width: 450px;
+    margin: 0 auto;
+    border: 1px solid var(--color-lightGray);
+    border-radius: 15px;
+    padding: 30px;
+    display: grid;
+    row-gap: 35px;
+}
+
+input {
+    border-radius: 10px;
+    width: 100%;
+    height: 2.5em;
+    padding: 1px 10px;
+    border: 1px solid var(--color-lightGray);
+}
+
+input[aria-invalid='true']:placeholder-shown::placeholder {
+    color: var(--color-red);
+}
+
+form {
+    display: grid;
+    row-gap: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.85em;
+    opacity: 0.8;
+}
+
+.btn-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn {
+    display: block;
+    width: 100%;
+    max-width: 500px;
+    height: 2.5em;
+    border-radius: 10px;
+    border: none;
+    font-weight: bold;
+    margin: 0 auto;
+    cursor: pointer;
+    background-color: var(--color-lightGray-100);
+}
+
+a.btn {
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+a.btn:link,
+a.btn:visited,
+a.btn:active {
+    color: var(--color-black);
+}
+
+a.btn--submit:link,
+a.btn--submit:visited,
+a.btn--submit:active {
+    color: var(--color-white);
+}
+
+.btn:hover {
+    background-color: var(--color-lightGray-50);
+}
+
+.btn--submit {
+    background-color: var(--color-purple);
+    color: var(--color-white);
+}
+
+.btn--submit:hover {
+    background-color: var(--color-purple-50);
+}
+
+.title {
+    text-align: center;
+}
+
+.validation-msg,
+.error-message {
+    color: var(--color-red);
+    font-weight: 500;
+    font-size: 0.85em;
+    min-height: 18px;
+    visibility: hidden;
+}
+
+.error-message {
+    display: block;
+    margin-top: 4px;
+}
+
+.input.error {
+    border: 1px solid var(--color-red);
+}
+
+.validation-msg.visible,
+.error-message.visible {
+    visibility: visible;
+}
+
+/* LOGIN */
+.login__registration-text,
+.register__back-to-login-text {
+    text-align: center;
+    font-size: 0.75em;
+    margin-top: 15px;
+
+    a {
+        font-weight: bold;
+    }
+}
+
+/* DASHBOARD */
+.profile {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    row-gap: 5px;
+    justify-content: center;
+    text-align: center;
+
+    .member-since-text {
+        font-size: 0.7em;
+        font-style: italic;
+    }
+}
+
+.token-countdown-container {
+    display: grid;
+    row-gap: 5px;
+    justify-content: center;
+    text-align: center;
+
+    .token-expires-text {
+        font-size: 0.8em;
+    }
+
+    .countdown {
+        display: inline-block;
+    }
+
+    .countdown-num,
+    .countdown-label {
+        display: inline-block;
+    }
+
+    .countdown-label {
+        font-size: 0.8em;
+        font-style: italic;
+    }
+}
+
+#admin-panel-btn {
+    visibility: hidden;
+}
+
+#admin-panel-btn.visible {
+    visibility: visible;
+}
+
+/* ADMIN */
+.admin-container {
+    width: 800px;
+
+    .users-container {
+        max-height: 400px;
+        overflow-y: auto;
+        border: 1px solid var(--color-lightGray);
+        border-radius: 10px;
+        padding: 10px;
+
+        table {
+            width: 100%;
+
+            caption {
+                text-align: left;
+                font-size: 1.5em;
+                font-weight: 600;
+                margin-bottom: 5px;
+            }
+        }
+
+        thead th {
+            background-color: var(--color-purple-100);
+            padding: 3px;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: var(--color-lightGray-150);
+        }
+
+        tbody tr:nth-child(odd) {
+            background-color: var(--color-purple-150);
+        }
+    }
+}

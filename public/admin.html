@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Admin Panel</title>
+        <link rel="stylesheet" href="css/base.css" />
+        <link rel="stylesheet" href="css/style.css" />
+    </head>
+    <body>
+        <main>
+            <div class="container admin-container">
+                <h1 class="title">Admin Panel</h1>
+                <div class="users-container">
+                    <p class="validation-msg"></p>
+                    <table class="users-table">
+                        <caption>
+                            Users
+                        </caption>
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Birthdate</th>
+                                <th>Role</th>
+                                <th>Created At</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="btn-container">
+                    <a
+                        id="view-profile-btn"
+                        class="btn btn--submit"
+                        href="./dashboard.html"
+                    >
+                        View Profile
+                    </a>
+                    <button id="logout-btn" class="btn" type="button">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </main>
+        <script type="module" src="./js/admin.js"></script>
+    </body>
+</html>
